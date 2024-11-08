@@ -17,36 +17,34 @@ export class AppComponent {
   promptText = signal('');
   output = signal<string | null>('');
 
-  isLoading = false;
+  isLoading = signal(false);
 
   async search() {
-      const openai = new OpenAI({
-        apiKey: environment.openAiKey,
-        dangerouslyAllowBrowser: true
+    const openai = new OpenAI({
+      apiKey: environment.openAiKey,
+      dangerouslyAllowBrowser: true
+    });
+
+    // Define o estado de carregamento como true antes da requisição
+    this.isLoading.set(true);
+
+    try {
+      const response = await openai.chat.completions.create({
+        messages: [
+          {
+            "role": "user",
+            "content": `${this.promptText()}`,
+          },
+        ],
+        model: 'gpt-3.5-turbo',
       });
 
-      // Define o estado de carregamento como true antes da requisição
-      this.isLoading = true;
-
-      try {
-        const response = await openai.chat.completions.create({
-          messages: [
-            {
-              "role": "user",
-              "content": `${this.promptText()}`,
-            },
-          ],
-          model: 'gpt-3.5-turbo',
-        });
-
-        this.output.set(response.choices[0].message.content);
-        console.log(response.choices[0].message.content);
-        console.log(response.choices);
-      } catch (error) {
-        console.error('Error occurred while fetching API response:', error);
-      } finally {
-        this.isLoading = false;
-      }
+      this.output.set(response.choices[0].message.content);
+    } catch (error) {
+      console.error('Error occurred while fetching API response:', error);
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
 }

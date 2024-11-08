@@ -17,10 +17,13 @@
             </div>
           </div>
           <div class="row">
-            <div *ngIf="isLoading" class="spinner">Loading...</div>
-            <div *ngIf="!isLoading" class="col-md-10 mt-3">
-              <pre>{{ output() }}</pre>
-            </div>
+            @if (isLoading()) {
+              <div class="spinner">Loading...</div>
+            } @else if (!isLoading()) {
+              <div class="col-md-10 mt-3">
+                <pre>{{ output() }}</pre>
+              </div>
+            }
           </div>
         </div>
       </div>
