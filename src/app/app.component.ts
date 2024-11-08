@@ -17,8 +17,6 @@ export class AppComponent {
   promptText = signal('');
   output = signal<string | null>('');
 
-  chats = signal<any>([]);
-
   isLoading = false;
 
   async search() {
@@ -42,13 +40,8 @@ export class AppComponent {
         });
 
         this.output.set(response.choices[0].message.content);
-        const chat = {
-          question: this.promptText(),
-          answer: this.output
-        };
-        this.chats.set([chat, ...this.chats()]);
-        console.log(this.chats);
         console.log(response.choices[0].message.content);
+        console.log(response.choices);
       } catch (error) {
         console.error('Error occurred while fetching API response:', error);
       } finally {
