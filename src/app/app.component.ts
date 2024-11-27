@@ -25,7 +25,6 @@ export class AppComponent {
       dangerouslyAllowBrowser: true
     });
 
-    // Define o estado de carregamento como true antes da requisição
     this.isLoading.set(true);
 
     try {
@@ -36,7 +35,7 @@ export class AppComponent {
             "content": `${this.promptText()}`,
           },
         ],
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
       });
 
       this.output.set(response.choices[0].message.content);
@@ -45,6 +44,18 @@ export class AppComponent {
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  getOutputText(): string | null {
+    return this.output();
+  }
+
+  getWhatsappShareLink(): string {
+    const text = this.getOutputText();
+
+    return text
+      ? `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`
+      : '';
   }
 
 }

@@ -5,13 +5,14 @@
       <div class="card">
         <h4 class="card-header center text-primary">Angular Chat powered by ChatGPT</h4>
         <div class="card-body">
-          <h6 class="card-title text-success center">You are now Angular Chat by ChatGPT</h6>
+          <h6 class="card-title text-success center">
+            Welcome to Angular ChatGPT. Please, feel free to ask anything!
+          </h6>
           <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
+            <div class="col-md-12">
               <br>
               <textarea row="3" cols="15" class="form-control" [(ngModel)]="promptText"
-                placeholder="Start by asking what you are looking for"></textarea>
+                placeholder="Ask, me, please!"></textarea>
               <br>
               <button class="btn btn-primary push-right" (click)="search()">Send</button>
             </div>
@@ -21,7 +22,18 @@
               <div class="spinner">Loading...</div>
             } @else if (!isLoading()) {
               <div class="col-md-10 mt-3">
-                <pre>{{ output() }}</pre>
+                <div class="bg-light p-3 w-100" style="white-space: pre-wrap; word-break: break-word;">
+                  {{ output() }}
+                </div>
+                @if (output()) {
+                  <a
+                    class="btn btn-success mt-2"
+                    [attr.href]="getWhatsappShareLink()"
+                    target="_blank"
+                  >
+                    Share via Whatsapp
+                  </a>
+                }
               </div>
             }
           </div>
